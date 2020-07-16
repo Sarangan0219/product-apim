@@ -970,7 +970,7 @@
             <dependency>
                 <groupId>org.wso2.am</groupId>
                 <artifactId>org.wso2.carbon.apimgt.clients.gateway.api</artifactId>
-                <version>3.2.0-SNAPSHOT</version>
+                <version>${apimserver.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.am</groupId>
@@ -1217,6 +1217,11 @@
             <dependency>
                 <groupId>org.wso2.am</groupId>
                 <artifactId>org.wso2.am.integration.clients.admin.api</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.am</groupId>
+                <artifactId>org.wso2.am.integration.clients.gateway.api</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
         </dependencies>

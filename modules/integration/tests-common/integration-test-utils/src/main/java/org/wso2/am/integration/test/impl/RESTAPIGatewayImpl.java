@@ -1,11 +1,11 @@
 package org.wso2.am.integration.test.impl;
 
 
-//import org.wso2.am.integration.clients.gateway.ApiClient;
-//import org.wso2.am.integration.clients.gateway.api.DeployApiApi;
-//import org.wso2.am.integration.clients.gateway.api.GetApiArtifactApi;
-//import org.wso2.am.integration.clients.gateway.api.GetApiSequencesApi;
-//import org.wso2.am.integration.clients.gateway.api.UndeployApiApi;
+import org.wso2.am.integration.clients.gateway.ApiClient;
+import org.wso2.am.integration.clients.gateway.api.DeployApiApi;
+import org.wso2.am.integration.clients.gateway.api.GetApiArtifactApi;
+import org.wso2.am.integration.clients.gateway.api.GetApiSequencesApi;
+import org.wso2.am.integration.clients.gateway.api.UndeployApiApi;
 import org.wso2.am.integration.test.ClientAuthenticator;
 
 public class RESTAPIGatewayImpl {
@@ -19,11 +19,11 @@ public class RESTAPIGatewayImpl {
     public static final String password = "admin";
     public String gatewayURL;
     public String tenantDomain;
-//    public DeployApiApi deployApiApi = new DeployApiApi();
-//    public GetApiArtifactApi getApiArtifactApi = new GetApiArtifactApi();
-//    public GetApiSequencesApi getApiSequencesApi = new GetApiSequencesApi();
-//    public UndeployApiApi undeployApiApi = new UndeployApiApi();
-//    public ApiClient apiGatewayClient = new ApiClient();
+    public DeployApiApi deployApiApi = new DeployApiApi();
+    public GetApiArtifactApi getApiArtifactApi = new GetApiArtifactApi();
+    public GetApiSequencesApi getApiSequencesApi = new GetApiSequencesApi();
+    public UndeployApiApi undeployApiApi = new UndeployApiApi();
+    public ApiClient apiGatewayClient = new ApiClient();
 
     @Deprecated
     public RESTAPIGatewayImpl() {
@@ -41,17 +41,17 @@ public class RESTAPIGatewayImpl {
         this.gatewayURL = gatewayURL;
         this.tenantDomain = tenantDomain;
 
-//        apiGatewayClient.addDefaultHeader("Authorization", "Bearer " + accessToken);
-//        apiGatewayClient.setBasePath(gatewayURL + "api/am/gateway/v1");
-//        apiGatewayClient.setDebugging(true);
-//        apiGatewayClient.setReadTimeout(600000);
-//        apiGatewayClient.setConnectTimeout(600000);
-//        apiGatewayClient.setWriteTimeout(600000);
-//
-//        deployApiApi.setApiClient(apiGatewayClient);
-//        undeployApiApi.setApiClient(apiGatewayClient);
-//        getApiArtifactApi.setApiClient(apiGatewayClient);
-//        getApiSequencesApi.setApiClient(apiGatewayClient);
+        apiGatewayClient.addDefaultHeader("Authorization", "Bearer " + accessToken);
+        apiGatewayClient.setBasePath(gatewayURL + "api/am/gateway/v1");
+        apiGatewayClient.setDebugging(true);
+        apiGatewayClient.setReadTimeout(600000);
+        apiGatewayClient.setConnectTimeout(600000);
+        apiGatewayClient.setWriteTimeout(600000);
+
+        deployApiApi.setApiClient(apiGatewayClient);
+        undeployApiApi.setApiClient(apiGatewayClient);
+        getApiArtifactApi.setApiClient(apiGatewayClient);
+        getApiSequencesApi.setApiClient(apiGatewayClient);
     }
 
 
