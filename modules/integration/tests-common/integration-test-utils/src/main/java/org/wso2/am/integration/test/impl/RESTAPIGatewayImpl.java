@@ -2,10 +2,13 @@ package org.wso2.am.integration.test.impl;
 
 
 import org.wso2.am.integration.clients.gateway.ApiClient;
+import org.wso2.am.integration.clients.gateway.ApiException;
+import org.wso2.am.integration.clients.gateway.ApiResponse;
 import org.wso2.am.integration.clients.gateway.api.DeployApiApi;
 import org.wso2.am.integration.clients.gateway.api.GetApiArtifactApi;
 import org.wso2.am.integration.clients.gateway.api.GetApiSequencesApi;
 import org.wso2.am.integration.clients.gateway.api.UndeployApiApi;
+import org.wso2.am.integration.clients.gateway.api.dto.DeployResponseDTO;
 import org.wso2.am.integration.test.ClientAuthenticator;
 
 public class RESTAPIGatewayImpl {
@@ -52,6 +55,11 @@ public class RESTAPIGatewayImpl {
         undeployApiApi.setApiClient(apiGatewayClient);
         getApiArtifactApi.setApiClient(apiGatewayClient);
         getApiSequencesApi.setApiClient(apiGatewayClient);
+    }
+
+    public ApiResponse<DeployResponseDTO> deployAPIInGateway(String apiName, String label, String apiId) throws
+            ApiException {
+        return deployApiApi.deployApiPostWithHttpInfo(apiName, label, apiId);
     }
 
 

@@ -38,6 +38,7 @@ import org.wso2.am.integration.clients.store.api.v1.dto.ApplicationInfoDTO;
 import org.wso2.am.integration.clients.store.api.v1.dto.ApplicationListDTO;
 import org.wso2.am.integration.clients.store.api.v1.dto.SubscriptionDTO;
 import org.wso2.am.integration.clients.store.api.v1.dto.SubscriptionListDTO;
+import org.wso2.am.integration.test.impl.RESTAPIGatewayImpl;
 import org.wso2.am.integration.test.impl.RestAPIAdminImpl;
 import org.wso2.am.integration.test.impl.RestAPIPublisherImpl;
 import org.wso2.am.integration.test.impl.RestAPIStoreImpl;
@@ -98,6 +99,7 @@ public class APIMIntegrationBaseTest {
     protected RestAPIPublisherImpl restAPIPublisher;
     protected RestAPIStoreImpl restAPIStore;
     protected RestAPIAdminImpl restAPIAdmin;
+    protected RESTAPIGatewayImpl restAPIGateway;
     protected UserManagementClient userManagementClient;
     protected RemoteUserStoreManagerServiceClient remoteUserStoreManagerServiceClient;
     protected ClaimMetaDataMgtAdminClient remoteClaimMetaDataMgtAdminClient;
@@ -208,6 +210,11 @@ public class APIMIntegrationBaseTest {
             restAPIAdmin = new RestAPIAdminImpl(publisherContext.getContextTenant().getContextUser().getUserNameWithoutDomain(),
                     publisherContext.getContextTenant().getContextUser().getPassword(),
                     publisherContext.getContextTenant().getDomain(), publisherURLHttps);
+            restAPIGateway =
+                    new RESTAPIGatewayImpl(gatewayContextMgt.getContextTenant().getContextUser()
+                            .getUserNameWithoutDomain(),
+                    gatewayContextMgt.getContextTenant().getContextUser().getPassword(),
+                    gatewayContextMgt.getContextTenant().getDomain(), gatewayHTTPSURL);
             try {
                 keymanagerSuperTenantSessionCookie = new LoginLogoutClient(superTenantKeyManagerContext).login();
                 userManagementClient = new UserManagementClient(
