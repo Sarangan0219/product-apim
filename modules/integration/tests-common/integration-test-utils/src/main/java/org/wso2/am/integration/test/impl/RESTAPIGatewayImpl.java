@@ -96,4 +96,9 @@ public class RESTAPIGatewayImpl {
         return deployApiApi.deployApiPostWithHttpInfo(apiName, label, apiId);
     }
 
+    public ApiResponse<DeployResponseDTO> UnDeployAPIInGateway(String apiName, String label, String apiId) throws
+            ApiException {
+        return undeployApiApi.undeployApiPostWithHttpInfo(apiName, label, apiId);
+    }
+
 }

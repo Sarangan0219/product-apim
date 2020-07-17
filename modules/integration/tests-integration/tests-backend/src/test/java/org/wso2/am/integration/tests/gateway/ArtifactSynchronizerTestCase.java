@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.am.admin.clients.mediation.SynapseConfigAdminClient;
@@ -90,13 +91,19 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
         apiCreationRequestBean.setTags(API_TAGS);
         apiCreationRequestBean.setDescription(API_DESCRIPTION);
         HttpResponse createAPIResponse = apiPublisherClientUser1.addAPI(apiCreationRequestBean);
+        String sd = createAPIResponse.getData();
         APIDTO apidto = restAPIPublisher.addAPI(apiCreationRequestBean);
         String apiID = apidto.getId();
 
         ApiResponse<DeployResponseDTO> deployAPIResponse = restAPIGateway.deployAPIInGateway(API_NAME, GATEWAY_LABEL,
                 apiID);
         DeployResponseDTO deployResponseDTO = deployAPIResponse.getData();
-        DeployResponseDTO.DeployStatusEnum s= deployResponseDTO.getDeployStatus();
+        DeployResponseDTO.DeployStatusEnum s=  deployResponseDTO.getDeployStatus();
         String k = deployResponseDTO.getDeployStatus().toString();
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void destroy() throws Exception {
+        super.cleanUp();
     }
 }
