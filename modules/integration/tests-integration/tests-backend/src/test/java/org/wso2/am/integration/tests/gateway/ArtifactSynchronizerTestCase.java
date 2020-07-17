@@ -7,10 +7,15 @@ import org.json.JSONObject;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.am.admin.clients.mediation.SynapseConfigAdminClient;
+import org.wso2.am.integration.clients.admin.api.dto.KeyManagerDTO;
 import org.wso2.am.integration.clients.gateway.ApiException;
+import org.wso2.am.integration.clients.gateway.ApiResponse;
+import org.wso2.am.integration.clients.gateway.api.dto.DeployResponseDTO;
+import org.wso2.am.integration.clients.publisher.api.v1.dto.APIDTO;
 import org.wso2.am.integration.test.impl.RESTAPIGatewayImpl;
 import org.wso2.am.integration.test.impl.RestAPIAdminImpl;
 import org.wso2.am.integration.test.utils.APIManagerIntegrationTestException;
+import org.wso2.am.integration.test.utils.base.APIMIntegrationBaseTest;
 import org.wso2.am.integration.test.utils.bean.APICreationRequestBean;
 import org.wso2.am.integration.test.utils.bean.APILifeCycleState;
 import org.wso2.am.integration.test.utils.clients.APIPublisherRestClient;
@@ -52,12 +57,11 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
     private SynapseConfigAdminClient synapseConfigAdminClient;
     private String gatewaySession;
     private String apiEndPointUrl;
-    private RESTAPIGatewayImpl restAPIGatewayUser;
 
     @BeforeClass(alwaysRun = true)
     public void initialize() throws Exception {
-        super.init();
 
+        super.init();
         String synapseConfigArtifactsPath =
                 TestConfigurationProvider.getResourceLocation() + File.separator + "artifacts" + File.separator +
                         "AM" + File.separator + "lifecycletest" + File.separator + "synapseconfig.xml";
@@ -74,13 +78,11 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
         synapseConfigAdminClient =
                 new SynapseConfigAdminClient(gatewayContextMgt.getContextUrls().getBackEndUrl(), gatewaySession);
         apiEndPointUrl = gatewayUrlsWrk.getWebAppURLHttp() + API_END_POINT_POSTFIX_URL;
-
-        restAPIGatewayUser = new RESTAPIGatewayImpl("admin", "admin", "carbon.super",
-                gatewayHTTPSURL);
     }
     @Test(groups = {"wso2.am"}, description = "Create an API and deploy it in the gateway")
     public void testCreateDeployAPIInGateway()
-            throws MalformedURLException, APIManagerIntegrationTestException, JSONException, ApiException {
+            throws MalformedURLException, APIManagerIntegrationTestException, JSONException, ApiException,
+            org.wso2.am.integration.clients.publisher.api.ApiException {
         apiIdentifier = new APIIdentifier(providerName, API_NAME, API_VERSION_1_0_0);
         apiIdentifier.setTier(TIER_GOLD);
         APICreationRequestBean apiCreationRequestBean = new APICreationRequestBean(API_NAME, API_CONTEXT,
@@ -88,26 +90,13 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
         apiCreationRequestBean.setTags(API_TAGS);
         apiCreationRequestBean.setDescription(API_DESCRIPTION);
         HttpResponse createAPIResponse = apiPublisherClientUser1.addAPI(apiCreationRequestBean);
+        APIDTO apidto = restAPIPublisher.addAPI(apiCreationRequestBean);
+        String apiID = apidto.getId();
 
-        HttpResponse apiResponse=apiPublisher.getApi(API_NAME, providerName, API_VERSION_1_0_0);
-        assertEquals(apiResponse.getResponseCode(), Response.Status.OK.getStatusCode());
-        assertTrue(apiResponse.getData().contains("\"error\" : false"),"Response Data Mismatched");
-        JSONObject apiCopyResponse=new JSONObject(apiResponse.getData());
-        String newName=apiCopyResponse.getJSONObject("api").getString("name");
-        assertEquals(newName,API_NAME,"API Name is not correct");
-        String apiID=apiCopyResponse.getJSONObject("api").getString("apiID");
-
-        restAPIGatewayUser.deployAPIInGateway(apiID, API_VERSION_1_0_0, GATEWAY_LABEL);
-
-        if (createAPIResponse.getResponseCode() == HTTP_RESPONSE_CODE_OK &&
-                getValueFromJSON(createAPIResponse, "error").equals("false")) {
-            log.info("API Created :" + getAPIIdentifierString(apiIdentifier));
-            //Publish the API
-        } else {
-            throw new APIManagerIntegrationTestException("Error in API Creation." +
-                    getAPIIdentifierString(apiIdentifier) +
-                    "Response Code:" + createAPIResponse.getResponseCode() +
-                    " Response Data :" + createAPIResponse.getData());
-        }
+        ApiResponse<DeployResponseDTO> deployAPIResponse = restAPIGateway.deployAPIInGateway(API_NAME, GATEWAY_LABEL,
+                apiID);
+        DeployResponseDTO deployResponseDTO = deployAPIResponse.getData();
+        DeployResponseDTO.DeployStatusEnum s= deployResponseDTO.getDeployStatus();
+        String k = deployResponseDTO.getDeployStatus().toString();
     }
 }

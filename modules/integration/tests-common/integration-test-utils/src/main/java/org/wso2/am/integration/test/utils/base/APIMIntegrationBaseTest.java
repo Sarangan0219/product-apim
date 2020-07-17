@@ -211,10 +211,9 @@ public class APIMIntegrationBaseTest {
                     publisherContext.getContextTenant().getContextUser().getPassword(),
                     publisherContext.getContextTenant().getDomain(), publisherURLHttps);
             restAPIGateway =
-                    new RESTAPIGatewayImpl(gatewayContextMgt.getContextTenant().getContextUser()
-                            .getUserNameWithoutDomain(),
-                    gatewayContextMgt.getContextTenant().getContextUser().getPassword(),
-                    gatewayContextMgt.getContextTenant().getDomain(), gatewayHTTPSURL);
+                    new RESTAPIGatewayImpl(publisherContext.getContextTenant().getContextUser().getUserNameWithoutDomain(),
+                            publisherContext.getContextTenant().getContextUser().getPassword(),
+                            publisherContext.getContextTenant().getDomain(), publisherURLHttps);
             try {
                 keymanagerSuperTenantSessionCookie = new LoginLogoutClient(superTenantKeyManagerContext).login();
                 userManagementClient = new UserManagementClient(
