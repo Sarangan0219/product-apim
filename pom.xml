@@ -969,6 +969,11 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.am</groupId>
+                <artifactId>org.wso2.carbon.apimgt.clients.gateway.api</artifactId>
+                <version>${apimserver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.am</groupId>
                 <artifactId>org.wso2.carbon.apimgt.clients.admin.api</artifactId>
                 <version>${apimserver.version}</version>
             </dependency>
@@ -1212,6 +1217,11 @@
             <dependency>
                 <groupId>org.wso2.am</groupId>
                 <artifactId>org.wso2.am.integration.clients.admin.api</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.am</groupId>
+                <artifactId>org.wso2.am.integration.clients.gateway.api</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
         </dependencies>

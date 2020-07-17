@@ -163,6 +163,7 @@ public class APIManagerLifecycleBaseTest extends APIMIntegrationBaseTest {
            RestAPIStoreImpl storeRestClient) throws APIManagerIntegrationTestException {
         return storeRestClient.createSubscription(apiId, applicationId, tier);
     }
+    
 
     /**
      * Generate the access token
