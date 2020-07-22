@@ -58,6 +58,7 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
     private SynapseConfigAdminClient synapseConfigAdminClient;
     private String gatewaySession;
     private String apiEndPointUrl;
+    private String tenantDomain;
 
     @BeforeClass(alwaysRun = true)
     public void initialize() throws Exception {
@@ -69,6 +70,7 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
         newSynapseConfig = readFile(synapseConfigArtifactsPath);
 
         providerName = publisherContext.getContextTenant().getContextUser().getUserName();
+        tenantDomain = publisherContext.getContextTenant().getDomain();
         String publisherURLHttp = publisherUrls.getWebAppURLHttp();
         apiPublisherClientUser1 = new APIPublisherRestClient(publisherURLHttp);
         //Login to API Publisher with  admin
@@ -93,10 +95,10 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
         HttpResponse createAPIResponse = apiPublisherClientUser1.addAPI(apiCreationRequestBean);
         String sd = createAPIResponse.getData();
         APIDTO apidto = restAPIPublisher.addAPI(apiCreationRequestBean);
-        String apiID = apidto.getId();
 
-        ApiResponse<DeployResponseDTO> deployAPIResponse = restAPIGateway.deployAPIInGateway(API_NAME, GATEWAY_LABEL,
-                apiID);
+
+        ApiResponse<DeployResponseDTO> deployAPIResponse = restAPIGateway.deployAPIInGateway(API_NAME,
+                API_VERSION_1_0_0, tenantDomain);
         DeployResponseDTO deployResponseDTO = deployAPIResponse.getData();
         DeployResponseDTO.DeployStatusEnum s=  deployResponseDTO.getDeployStatus();
         String k = deployResponseDTO.getDeployStatus().toString();

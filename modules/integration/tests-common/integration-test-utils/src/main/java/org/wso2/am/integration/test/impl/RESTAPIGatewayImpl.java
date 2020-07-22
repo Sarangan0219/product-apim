@@ -16,33 +16,19 @@
 
 package org.wso2.am.integration.test.impl;
 
-import com.google.gson.Gson;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpStatus;
-import org.testng.Assert;
+
 import org.wso2.am.integration.clients.gateway.ApiClient;
 import org.wso2.am.integration.clients.gateway.ApiException;
 import org.wso2.am.integration.clients.gateway.ApiResponse;
-import org.wso2.am.integration.clients.gateway.api.DeployApiApi;
-import org.wso2.am.integration.clients.gateway.api.GetApiArtifactApi;
+import org.wso2.am.integration.clients.gateway.api.GetApiArtifactsApi;
 import org.wso2.am.integration.clients.gateway.api.GetApiSequencesApi;
+import org.wso2.am.integration.clients.gateway.api.ReDeployApiApi;
 import org.wso2.am.integration.clients.gateway.api.UndeployApiApi;
 import org.wso2.am.integration.clients.gateway.api.dto.DeployResponseDTO;
 import org.wso2.am.integration.test.ClientAuthenticator;
 
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.xpath.XPathExpressionException;
-
 /**
- * This util class performs the actions related to APIDTOobjects.
+ * This util class performs the actions related to GATEWAYDTOobjects.
  */
 public class RESTAPIGatewayImpl {
     ApiClient apiStoreClient = new ApiClient();
@@ -55,8 +41,8 @@ public class RESTAPIGatewayImpl {
     public static final String password = "admin";
     public String storeURL;
     public String tenantDomain;
-    public DeployApiApi deployApiApi = new DeployApiApi();
-    public GetApiArtifactApi getApiArtifactApi = new GetApiArtifactApi();
+    public ReDeployApiApi reDeployApiApi = new ReDeployApiApi();
+    public GetApiArtifactsApi getApiArtifactApi = new GetApiArtifactsApi();
     public GetApiSequencesApi getApiSequencesApi = new GetApiSequencesApi();
     public UndeployApiApi undeployApiApi = new UndeployApiApi();
 
@@ -83,7 +69,7 @@ public class RESTAPIGatewayImpl {
         apiStoreClient.setWriteTimeout(600000);
         apiStoreClient.setDebugging(true);
 
-        deployApiApi.setApiClient(apiStoreClient);
+        reDeployApiApi.setApiClient(apiStoreClient);
         undeployApiApi.setApiClient(apiStoreClient);
         getApiArtifactApi.setApiClient(apiStoreClient);
         getApiSequencesApi.setApiClient(apiStoreClient);
@@ -91,9 +77,9 @@ public class RESTAPIGatewayImpl {
         this.tenantDomain = tenantDomain;
     }
 
-    public ApiResponse<DeployResponseDTO> deployAPIInGateway(String apiName, String label, String apiId) throws
+    public ApiResponse<DeployResponseDTO> deployAPIInGateway(String apiName, String version, String tenantDomain) throws
             ApiException {
-        return deployApiApi.deployApiPostWithHttpInfo(apiName, label, apiId);
+        return reDeployApiApi. redeployApiPostWithHttpInfo(apiName, version, tenantDomain);
     }
 
     public ApiResponse<DeployResponseDTO> UnDeployAPIInGateway(String apiName, String label, String apiId) throws

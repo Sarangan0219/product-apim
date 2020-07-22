@@ -36,14 +36,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeployApiApi {
+public class ReDeployApiApi {
     private ApiClient apiClient;
 
-    public DeployApiApi() {
+    public ReDeployApiApi() {
         this(Configuration.getDefaultApiClient());
     }
 
-    public DeployApiApi(ApiClient apiClient) {
+    public ReDeployApiApi(ApiClient apiClient) {
         this.apiClient = apiClient;
     }
 
@@ -56,29 +56,29 @@ public class DeployApiApi {
     }
 
     /**
-     * Build call for deployApiPost
+     * Build call for redeployApiPost
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call deployApiPostCall(String apiName, String label, String apiId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call redeployApiPostCall(String apiName, String version, String tenantDomain, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/deploy-api";
+        String localVarPath = "/redeploy-api";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         if (apiName != null)
         localVarQueryParams.addAll(apiClient.parameterToPair("apiName", apiName));
-        if (label != null)
-        localVarQueryParams.addAll(apiClient.parameterToPair("label", label));
-        if (apiId != null)
-        localVarQueryParams.addAll(apiClient.parameterToPair("apiId", apiId));
+        if (version != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("version", version));
+        if (tenantDomain != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("tenantDomain", tenantDomain));
 
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
 
@@ -113,69 +113,64 @@ public class DeployApiApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call deployApiPostValidateBeforeCall(String apiName, String label, String apiId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call redeployApiPostValidateBeforeCall(String apiName, String version, String tenantDomain, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
         // verify the required parameter 'apiName' is set
         if (apiName == null) {
-            throw new ApiException("Missing the required parameter 'apiName' when calling deployApiPost(Async)");
+            throw new ApiException("Missing the required parameter 'apiName' when calling redeployApiPost(Async)");
         }
         
-        // verify the required parameter 'label' is set
-        if (label == null) {
-            throw new ApiException("Missing the required parameter 'label' when calling deployApiPost(Async)");
-        }
-        
-        // verify the required parameter 'apiId' is set
-        if (apiId == null) {
-            throw new ApiException("Missing the required parameter 'apiId' when calling deployApiPost(Async)");
+        // verify the required parameter 'version' is set
+        if (version == null) {
+            throw new ApiException("Missing the required parameter 'version' when calling redeployApiPost(Async)");
         }
         
 
-        com.squareup.okhttp.Call call = deployApiPostCall(apiName, label, apiId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = redeployApiPostCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
         return call;
 
     }
 
     /**
-     * Deploy the API in the gateway
-     * This operation is used to deploy and API in the gateway. 
+     * Re Deploy the API in the gateway
+     * This operation is used to re deploy an API in the gateway. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @return DeployResponseDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public DeployResponseDTO deployApiPost(String apiName, String label, String apiId) throws ApiException {
-        ApiResponse<DeployResponseDTO> resp = deployApiPostWithHttpInfo(apiName, label, apiId);
+    public DeployResponseDTO redeployApiPost(String apiName, String version, String tenantDomain) throws ApiException {
+        ApiResponse<DeployResponseDTO> resp = redeployApiPostWithHttpInfo(apiName, version, tenantDomain);
         return resp.getData();
     }
 
     /**
-     * Deploy the API in the gateway
-     * This operation is used to deploy and API in the gateway. 
+     * Re Deploy the API in the gateway
+     * This operation is used to re deploy an API in the gateway. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @return ApiResponse&lt;DeployResponseDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<DeployResponseDTO> deployApiPostWithHttpInfo(String apiName, String label, String apiId) throws ApiException {
-        com.squareup.okhttp.Call call = deployApiPostValidateBeforeCall(apiName, label, apiId, null, null);
+    public ApiResponse<DeployResponseDTO> redeployApiPostWithHttpInfo(String apiName, String version, String tenantDomain) throws ApiException {
+        com.squareup.okhttp.Call call = redeployApiPostValidateBeforeCall(apiName, version, tenantDomain, null, null);
         Type localVarReturnType = new TypeToken<DeployResponseDTO>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
-     * Deploy the API in the gateway (asynchronously)
-     * This operation is used to deploy and API in the gateway. 
+     * Re Deploy the API in the gateway (asynchronously)
+     * This operation is used to re deploy an API in the gateway. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call deployApiPostAsync(String apiName, String label, String apiId, final ApiCallback<DeployResponseDTO> callback) throws ApiException {
+    public com.squareup.okhttp.Call redeployApiPostAsync(String apiName, String version, String tenantDomain, final ApiCallback<DeployResponseDTO> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -196,7 +191,7 @@ public class DeployApiApi {
             };
         }
 
-        com.squareup.okhttp.Call call = deployApiPostValidateBeforeCall(apiName, label, apiId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = redeployApiPostValidateBeforeCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<DeployResponseDTO>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;

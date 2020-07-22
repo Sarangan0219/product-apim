@@ -27,8 +27,11 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
+import org.wso2.am.integration.clients.gateway.api.dto.APIArtifactDTO;
 import org.wso2.am.integration.clients.gateway.api.dto.DeployResponseDTO;
 import org.wso2.am.integration.clients.gateway.api.dto.ErrorDTO;
+import org.wso2.am.integration.clients.gateway.api.dto.LocalEntryDTO;
+import org.wso2.am.integration.clients.gateway.api.dto.SequencesDTO;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -36,14 +39,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetApiArtifactApi {
+public class GetApiArtifactsApi {
     private ApiClient apiClient;
 
-    public GetApiArtifactApi() {
+    public GetApiArtifactsApi() {
         this(Configuration.getDefaultApiClient());
     }
 
-    public GetApiArtifactApi(ApiClient apiClient) {
+    public GetApiArtifactsApi(ApiClient apiClient) {
         this.apiClient = apiClient;
     }
 
@@ -58,8 +61,8 @@ public class GetApiArtifactApi {
     /**
      * Build call for apiArtifactGet
      * @param apiName Name of the API  (required)
-     * @param version version of the API Gateway  (required)
-     * @param tenantDomain tenantDomain of the API Gateway  (optional)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
@@ -133,44 +136,44 @@ public class GetApiArtifactApi {
 
     /**
      * Get API artifact from the storage
-     * This operation is used to get the API artifact from the storage 
+     * This operation is used to get the local entries, sequences and endpoints from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param version version of the API Gateway  (required)
-     * @param tenantDomain tenantDomain of the API Gateway  (optional)
-     * @return DeployResponseDTO
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
+     * @return APIArtifactDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public DeployResponseDTO apiArtifactGet(String apiName, String version, String tenantDomain) throws ApiException {
-        ApiResponse<DeployResponseDTO> resp = apiArtifactGetWithHttpInfo(apiName, version, tenantDomain);
+    public APIArtifactDTO apiArtifactGet(String apiName, String version, String tenantDomain) throws ApiException {
+        ApiResponse<APIArtifactDTO> resp = apiArtifactGetWithHttpInfo(apiName, version, tenantDomain);
         return resp.getData();
     }
 
     /**
      * Get API artifact from the storage
-     * This operation is used to get the API artifact from the storage 
+     * This operation is used to get the local entries, sequences and endpoints from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param version version of the API Gateway  (required)
-     * @param tenantDomain tenantDomain of the API Gateway  (optional)
-     * @return ApiResponse&lt;DeployResponseDTO&gt;
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
+     * @return ApiResponse&lt;APIArtifactDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<DeployResponseDTO> apiArtifactGetWithHttpInfo(String apiName, String version, String tenantDomain) throws ApiException {
+    public ApiResponse<APIArtifactDTO> apiArtifactGetWithHttpInfo(String apiName, String version, String tenantDomain) throws ApiException {
         com.squareup.okhttp.Call call = apiArtifactGetValidateBeforeCall(apiName, version, tenantDomain, null, null);
-        Type localVarReturnType = new TypeToken<DeployResponseDTO>(){}.getType();
+        Type localVarReturnType = new TypeToken<APIArtifactDTO>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Get API artifact from the storage (asynchronously)
-     * This operation is used to get the API artifact from the storage 
+     * This operation is used to get the local entries, sequences and endpoints from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param version version of the API Gateway  (required)
-     * @param tenantDomain tenantDomain of the API Gateway  (optional)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call apiArtifactGetAsync(String apiName, String version, String tenantDomain, final ApiCallback<DeployResponseDTO> callback) throws ApiException {
+    public com.squareup.okhttp.Call apiArtifactGetAsync(String apiName, String version, String tenantDomain, final ApiCallback<APIArtifactDTO> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -192,21 +195,21 @@ public class GetApiArtifactApi {
         }
 
         com.squareup.okhttp.Call call = apiArtifactGetValidateBeforeCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<DeployResponseDTO>(){}.getType();
+        Type localVarReturnType = new TypeToken<APIArtifactDTO>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
      * Build call for endPointsGet
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call endPointsGetCall(String apiName, String label, String apiId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call endPointsGetCall(String apiName, String version, String tenantDomain, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
@@ -216,10 +219,10 @@ public class GetApiArtifactApi {
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         if (apiName != null)
         localVarQueryParams.addAll(apiClient.parameterToPair("apiName", apiName));
-        if (label != null)
-        localVarQueryParams.addAll(apiClient.parameterToPair("label", label));
-        if (apiId != null)
-        localVarQueryParams.addAll(apiClient.parameterToPair("apiId", apiId));
+        if (version != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("version", version));
+        if (tenantDomain != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("tenantDomain", tenantDomain));
 
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
 
@@ -254,69 +257,64 @@ public class GetApiArtifactApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call endPointsGetValidateBeforeCall(String apiName, String label, String apiId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call endPointsGetValidateBeforeCall(String apiName, String version, String tenantDomain, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
         // verify the required parameter 'apiName' is set
         if (apiName == null) {
             throw new ApiException("Missing the required parameter 'apiName' when calling endPointsGet(Async)");
         }
         
-        // verify the required parameter 'label' is set
-        if (label == null) {
-            throw new ApiException("Missing the required parameter 'label' when calling endPointsGet(Async)");
-        }
-        
-        // verify the required parameter 'apiId' is set
-        if (apiId == null) {
-            throw new ApiException("Missing the required parameter 'apiId' when calling endPointsGet(Async)");
+        // verify the required parameter 'version' is set
+        if (version == null) {
+            throw new ApiException("Missing the required parameter 'version' when calling endPointsGet(Async)");
         }
         
 
-        com.squareup.okhttp.Call call = endPointsGetCall(apiName, label, apiId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = endPointsGetCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
         return call;
 
     }
 
     /**
      * Get end-points from the storage for the API
-     * This operation is used to get the end-points from the storage 
+     * This operation is used to get the end-points from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @return DeployResponseDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public DeployResponseDTO endPointsGet(String apiName, String label, String apiId) throws ApiException {
-        ApiResponse<DeployResponseDTO> resp = endPointsGetWithHttpInfo(apiName, label, apiId);
+    public DeployResponseDTO endPointsGet(String apiName, String version, String tenantDomain) throws ApiException {
+        ApiResponse<DeployResponseDTO> resp = endPointsGetWithHttpInfo(apiName, version, tenantDomain);
         return resp.getData();
     }
 
     /**
      * Get end-points from the storage for the API
-     * This operation is used to get the end-points from the storage 
+     * This operation is used to get the end-points from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @return ApiResponse&lt;DeployResponseDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<DeployResponseDTO> endPointsGetWithHttpInfo(String apiName, String label, String apiId) throws ApiException {
-        com.squareup.okhttp.Call call = endPointsGetValidateBeforeCall(apiName, label, apiId, null, null);
+    public ApiResponse<DeployResponseDTO> endPointsGetWithHttpInfo(String apiName, String version, String tenantDomain) throws ApiException {
+        com.squareup.okhttp.Call call = endPointsGetValidateBeforeCall(apiName, version, tenantDomain, null, null);
         Type localVarReturnType = new TypeToken<DeployResponseDTO>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Get end-points from the storage for the API (asynchronously)
-     * This operation is used to get the end-points from the storage 
+     * This operation is used to get the end-points from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call endPointsGetAsync(String apiName, String label, String apiId, final ApiCallback<DeployResponseDTO> callback) throws ApiException {
+    public com.squareup.okhttp.Call endPointsGetAsync(String apiName, String version, String tenantDomain, final ApiCallback<DeployResponseDTO> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -337,7 +335,7 @@ public class GetApiArtifactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = endPointsGetValidateBeforeCall(apiName, label, apiId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = endPointsGetValidateBeforeCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<DeployResponseDTO>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
@@ -345,14 +343,14 @@ public class GetApiArtifactApi {
     /**
      * Build call for localEntryGet
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call localEntryGetCall(String apiName, String label, String apiId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call localEntryGetCall(String apiName, String version, String tenantDomain, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
@@ -362,10 +360,10 @@ public class GetApiArtifactApi {
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         if (apiName != null)
         localVarQueryParams.addAll(apiClient.parameterToPair("apiName", apiName));
-        if (label != null)
-        localVarQueryParams.addAll(apiClient.parameterToPair("label", label));
-        if (apiId != null)
-        localVarQueryParams.addAll(apiClient.parameterToPair("apiId", apiId));
+        if (version != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("version", version));
+        if (tenantDomain != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("tenantDomain", tenantDomain));
 
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
 
@@ -400,69 +398,64 @@ public class GetApiArtifactApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call localEntryGetValidateBeforeCall(String apiName, String label, String apiId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call localEntryGetValidateBeforeCall(String apiName, String version, String tenantDomain, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
         // verify the required parameter 'apiName' is set
         if (apiName == null) {
             throw new ApiException("Missing the required parameter 'apiName' when calling localEntryGet(Async)");
         }
         
-        // verify the required parameter 'label' is set
-        if (label == null) {
-            throw new ApiException("Missing the required parameter 'label' when calling localEntryGet(Async)");
-        }
-        
-        // verify the required parameter 'apiId' is set
-        if (apiId == null) {
-            throw new ApiException("Missing the required parameter 'apiId' when calling localEntryGet(Async)");
+        // verify the required parameter 'version' is set
+        if (version == null) {
+            throw new ApiException("Missing the required parameter 'version' when calling localEntryGet(Async)");
         }
         
 
-        com.squareup.okhttp.Call call = localEntryGetCall(apiName, label, apiId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = localEntryGetCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
         return call;
 
     }
 
     /**
      * Get Local Entry from the storage
-     * This operation is used to get local entry from the storage 
+     * This operation is used to get local entry from the storage.If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
-     * @return DeployResponseDTO
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
+     * @return LocalEntryDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public DeployResponseDTO localEntryGet(String apiName, String label, String apiId) throws ApiException {
-        ApiResponse<DeployResponseDTO> resp = localEntryGetWithHttpInfo(apiName, label, apiId);
+    public LocalEntryDTO localEntryGet(String apiName, String version, String tenantDomain) throws ApiException {
+        ApiResponse<LocalEntryDTO> resp = localEntryGetWithHttpInfo(apiName, version, tenantDomain);
         return resp.getData();
     }
 
     /**
      * Get Local Entry from the storage
-     * This operation is used to get local entry from the storage 
+     * This operation is used to get local entry from the storage.If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
-     * @return ApiResponse&lt;DeployResponseDTO&gt;
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
+     * @return ApiResponse&lt;LocalEntryDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<DeployResponseDTO> localEntryGetWithHttpInfo(String apiName, String label, String apiId) throws ApiException {
-        com.squareup.okhttp.Call call = localEntryGetValidateBeforeCall(apiName, label, apiId, null, null);
-        Type localVarReturnType = new TypeToken<DeployResponseDTO>(){}.getType();
+    public ApiResponse<LocalEntryDTO> localEntryGetWithHttpInfo(String apiName, String version, String tenantDomain) throws ApiException {
+        com.squareup.okhttp.Call call = localEntryGetValidateBeforeCall(apiName, version, tenantDomain, null, null);
+        Type localVarReturnType = new TypeToken<LocalEntryDTO>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Get Local Entry from the storage (asynchronously)
-     * This operation is used to get local entry from the storage 
+     * This operation is used to get local entry from the storage.If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
      * @param apiName Name of the API  (required)
-     * @param label Label of the API Gateway  (required)
-     * @param apiId **API ID** consisting of the **UUID** of the API. The combination of the provider of the API, name of the API and the version is also accepted as a valid API I. Should be formatted as **provider-name-version**.  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call localEntryGetAsync(String apiName, String label, String apiId, final ApiCallback<DeployResponseDTO> callback) throws ApiException {
+    public com.squareup.okhttp.Call localEntryGetAsync(String apiName, String version, String tenantDomain, final ApiCallback<LocalEntryDTO> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -483,8 +476,149 @@ public class GetApiArtifactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = localEntryGetValidateBeforeCall(apiName, label, apiId, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<DeployResponseDTO>(){}.getType();
+        com.squareup.okhttp.Call call = localEntryGetValidateBeforeCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
+        Type localVarReturnType = new TypeToken<LocalEntryDTO>(){}.getType();
+        apiClient.executeAsync(call, localVarReturnType, callback);
+        return call;
+    }
+    /**
+     * Build call for sequenceGet
+     * @param apiName Name of the API  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
+     * @param progressListener Progress listener
+     * @param progressRequestListener Progress request listener
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    public com.squareup.okhttp.Call sequenceGetCall(String apiName, String version, String tenantDomain, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/sequence";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        if (apiName != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("apiName", apiName));
+        if (version != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("version", version));
+        if (tenantDomain != null)
+        localVarQueryParams.addAll(apiClient.parameterToPair("tenantDomain", tenantDomain));
+
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put("Content-Type", localVarContentType);
+
+        if(progressListener != null) {
+            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
+                @Override
+                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
+                    return originalResponse.newBuilder()
+                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
+                    .build();
+                }
+            });
+        }
+
+        String[] localVarAuthNames = new String[] { "OAuth2Security" };
+        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private com.squareup.okhttp.Call sequenceGetValidateBeforeCall(String apiName, String version, String tenantDomain, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        
+        // verify the required parameter 'apiName' is set
+        if (apiName == null) {
+            throw new ApiException("Missing the required parameter 'apiName' when calling sequenceGet(Async)");
+        }
+        
+        // verify the required parameter 'version' is set
+        if (version == null) {
+            throw new ApiException("Missing the required parameter 'version' when calling sequenceGet(Async)");
+        }
+        
+
+        com.squareup.okhttp.Call call = sequenceGetCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
+        return call;
+
+    }
+
+    /**
+     * Get sequences from the storage
+     * This operation is used to get the API sequence from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
+     * @param apiName Name of the API  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
+     * @return SequencesDTO
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public SequencesDTO sequenceGet(String apiName, String version, String tenantDomain) throws ApiException {
+        ApiResponse<SequencesDTO> resp = sequenceGetWithHttpInfo(apiName, version, tenantDomain);
+        return resp.getData();
+    }
+
+    /**
+     * Get sequences from the storage
+     * This operation is used to get the API sequence from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
+     * @param apiName Name of the API  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
+     * @return ApiResponse&lt;SequencesDTO&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public ApiResponse<SequencesDTO> sequenceGetWithHttpInfo(String apiName, String version, String tenantDomain) throws ApiException {
+        com.squareup.okhttp.Call call = sequenceGetValidateBeforeCall(apiName, version, tenantDomain, null, null);
+        Type localVarReturnType = new TypeToken<SequencesDTO>(){}.getType();
+        return apiClient.execute(call, localVarReturnType);
+    }
+
+    /**
+     * Get sequences from the storage (asynchronously)
+     * This operation is used to get the API sequence from the storage. If the Tenant domain is not provided carbon.super will be picked as the Tenant domain. 
+     * @param apiName Name of the API  (required)
+     * @param version version of the API  (required)
+     * @param tenantDomain Tenant Domain of the API  (optional)
+     * @param callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     */
+    public com.squareup.okhttp.Call sequenceGetAsync(String apiName, String version, String tenantDomain, final ApiCallback<SequencesDTO> callback) throws ApiException {
+
+        ProgressResponseBody.ProgressListener progressListener = null;
+        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
+
+        if (callback != null) {
+            progressListener = new ProgressResponseBody.ProgressListener() {
+                @Override
+                public void update(long bytesRead, long contentLength, boolean done) {
+                    callback.onDownloadProgress(bytesRead, contentLength, done);
+                }
+            };
+
+            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
+                @Override
+                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
+                    callback.onUploadProgress(bytesWritten, contentLength, done);
+                }
+            };
+        }
+
+        com.squareup.okhttp.Call call = sequenceGetValidateBeforeCall(apiName, version, tenantDomain, progressListener, progressRequestListener);
+        Type localVarReturnType = new TypeToken<SequencesDTO>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
