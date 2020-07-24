@@ -24,10 +24,12 @@ import org.wso2.am.integration.test.utils.clients.APIStoreRestClient;
 import org.wso2.am.integration.tests.api.lifecycle.APIManagerLifecycleBaseTest;
 import org.wso2.am.integration.tests.api.lifecycle.AddNewHandlerAndInvokeAPITestCase;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
+import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.test.utils.common.TestConfigurationProvider;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
+import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
 import org.wso2.carbon.logging.view.data.xsd.LogEvent;
 
 import javax.ws.rs.core.Response;
@@ -59,6 +61,7 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
     private String gatewaySession;
     private String apiEndPointUrl;
     private String tenantDomain;
+    private ServerConfigurationManager serverConfigurationManager;
 
     @BeforeClass(alwaysRun = true)
     public void initialize() throws Exception {
@@ -81,6 +84,12 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
         synapseConfigAdminClient =
                 new SynapseConfigAdminClient(gatewayContextMgt.getContextUrls().getBackEndUrl(), gatewaySession);
         apiEndPointUrl = gatewayUrlsWrk.getWebAppURLHttp() + API_END_POINT_POSTFIX_URL;
+        if (TestUserMode.SUPER_TENANT_ADMIN == userMode) {
+            serverConfigurationManager = new ServerConfigurationManager(gatewayContextWrk);
+            serverConfigurationManager.applyConfiguration(new File(
+                    getAMResourceLocation() + File.separator + "configFiles" + File.separator +
+                            "artifactSynchronizerTest" + File.separator + "deployment.toml"));
+        }
     }
     @Test(groups = {"wso2.am"}, description = "Create an API and deploy it in the gateway")
     public void testCreateDeployAPIInGateway()
