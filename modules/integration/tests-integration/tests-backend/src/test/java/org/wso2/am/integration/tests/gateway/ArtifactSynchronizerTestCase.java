@@ -17,8 +17,7 @@ import org.wso2.am.integration.test.impl.RESTAPIGatewayImpl;
 import org.wso2.am.integration.test.impl.RestAPIAdminImpl;
 import org.wso2.am.integration.test.utils.APIManagerIntegrationTestException;
 import org.wso2.am.integration.test.utils.base.APIMIntegrationBaseTest;
-import org.wso2.am.integration.test.utils.bean.APICreationRequestBean;
-import org.wso2.am.integration.test.utils.bean.APILifeCycleState;
+import org.wso2.am.integration.test.utils.bean.*;
 import org.wso2.am.integration.test.utils.clients.APIPublisherRestClient;
 import org.wso2.am.integration.test.utils.clients.APIStoreRestClient;
 import org.wso2.am.integration.tests.api.lifecycle.APIManagerLifecycleBaseTest;
@@ -94,16 +93,26 @@ public class ArtifactSynchronizerTestCase extends APIManagerLifecycleBaseTest {
     @Test(groups = {"wso2.am"}, description = "Create an API and deploy it in the gateway")
     public void testCreateDeployAPIInGateway()
             throws MalformedURLException, APIManagerIntegrationTestException, JSONException, ApiException,
-            org.wso2.am.integration.clients.publisher.api.ApiException {
+            org.wso2.am.integration.clients.publisher.api.ApiException { ;
         apiIdentifier = new APIIdentifier(providerName, API_NAME, API_VERSION_1_0_0);
         apiIdentifier.setTier(TIER_GOLD);
-        APICreationRequestBean apiCreationRequestBean = new APICreationRequestBean(API_NAME, API_CONTEXT,
-                API_VERSION_1_0_0, providerName, new URL(apiEndPointUrl));
-        apiCreationRequestBean.setTags(API_TAGS);
-        apiCreationRequestBean.setDescription(API_DESCRIPTION);
-        HttpResponse createAPIResponse = apiPublisherClientUser1.addAPI(apiCreationRequestBean);
-        String sd = createAPIResponse.getData();
-        APIDTO apidto = restAPIPublisher.addAPI(apiCreationRequestBean);
+        String APIName = "APIGetAllSubscriptionsTestAPI";
+        String tags = "youtube, video, media";
+        String url = "http://gdata.youtube.com/feeds/api/standardfeeds";
+        APIRequest apiRequest = new APIRequest(APIName, API_CONTEXT, new URL(url));
+        apiRequest.setTags(tags);
+        apiRequest.setDescription(API_DESCRIPTION);
+        apiRequest.setVersion(API_VERSION_1_0_0);
+        apiRequest.setVisibility("restricted");
+        apiRequest.setRoles("admin");
+
+        apiRequest.setTier("Silver");
+
+        apiPublisherClientUser1.addAPI(apiRequest);
+        APILifeCycleStateRequest updateRequest = new APILifeCycleStateRequest(APIName, providerName,
+                APILifeCycleState.PUBLISHED);
+        apiPublisherClientUser1.changeAPILifeCycleStatus(updateRequest);
+
 
 
         ApiResponse<DeployResponseDTO> deployAPIResponse = restAPIGateway.deployAPIInGateway(API_NAME,
